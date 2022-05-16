@@ -26,7 +26,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
     @Override
     public void publish(MessageEvent messageEvent) {
-        // TODO: use jsonTemplate to send the event to DESTINATION
+        jmsTemplate.convertAndSend(DESTINATION, messageEvent);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class MessageBrokerImpl implements MessageBroker {
         listeners.add(listener);
     }
 
-    // TODO: annotate this method as a JMS listener; use DESTINATION as the destination, SUBSCRIPTION_NAME as the subscription and "topicJmsListenerContainerFactory" as the containerFactory
+    @JmsListener(destination = DESTINATION, subscription = SUBSCRIPTION_NAME, containerFactory = "topicJmsListenerContainerFactory")
     public void receiveMessage(MessageEvent event) {
         listeners.forEach(listener -> listener.onMessage(event));
     }

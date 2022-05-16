@@ -35,25 +35,27 @@ public class MessageServiceImpl implements MessageService, MessageListener {
 
     @Override
     public UUID createMessage(MessageRequest messageRequest) {
-        // TODO: map the request into MessageEvent, set a new ID and created datetime and send the event to the broker; return the ID
-        return null;
+        var messageEvent = messageMapper.requestToEvent(messageRequest);
+        messageEvent.setId(UUID.randomUUID());
+        messageEvent.setCreated(OffsetDateTime.now());
+        messageBroker.publish(messageEvent);
+        return messageEvent.getId();
     }
 
     @Override
     public List<Message> listMessages() {
-        // TODO: return the list of messages
-        return null;
+        return messages;
     }
 
     @Override
     public void onMessage(MessageEvent messageEvent) {
-        // TODO: process the incoming event - map it into Message and add it to the list
+        messages.add(messageMapper.eventToDTO(messageEvent));
     }
 
-    // TODO: schedule this function to be executed every 10s
+    @Scheduled(cron = "*/10 * * * * *")
     public void sendMessage() {
         MessageRequest messageRequest = new MessageRequest();
-        messageRequest.setName("TODO: your name");
+        messageRequest.setName("Masek");
         messageRequest.setMessage("TODO: your message :-)");
         createMessage(messageRequest);
     }

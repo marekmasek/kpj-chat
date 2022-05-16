@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-
-// TODO: enable scheduling and JMS
+@EnableScheduling
+@EnableJms
 @SpringBootApplication
 public class ChatApplication {
 

@@ -19,13 +19,12 @@ public class MessageRestController implements MessagesApi {
 
     @Override
     public ResponseEntity<Void> createMessage(MessageRequest messageRequest) {
-        // TODO: implement the endpoint and return HTTP Created
-        return null;
+        messageService.createMessage(messageRequest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<List<Message>> listMessages() {
-        // TODO: implement the endpoint and return the list
-        return null;
+        return new ResponseEntity<>(messageService.listMessages(), HttpStatus.OK);
     }
 }
